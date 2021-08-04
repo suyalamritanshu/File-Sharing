@@ -9,12 +9,20 @@ var PORT = process.env.PORT || 3000;
 
 var path = require('path');
 
+var cors = require('cors');
+
 app.use(express["static"]('public'));
 
 var connectDB = require('./config/db');
 
-connectDB();
-app.use(express.json());
+connectDB(); // CORS
+
+var corsOptions = {
+  origin: process.env.ALLOWED_CLIENTS.split(',')
+};
+app.use(cors(corsOptions));
+app.use(express.json()); // Template engines
+
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs'); // Routes 
 
